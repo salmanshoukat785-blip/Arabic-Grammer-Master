@@ -1,5 +1,6 @@
 package com.example.arabicgrammar
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -10,12 +11,15 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -24,6 +28,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.json.JSONArray
+import org.json.JSONObject
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 private val Brand = Color(0xFF047857)
 private val BrandDark = Color(0xFF022C22)
@@ -63,33 +72,126 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+/* ---------------- محفوظ شدہ ڈیٹا (نام اور اسکور) ---------------- */
+
+data class ScoreEntry(val type: String, val topic: String, val s: Int, val n: Int, val date: String)
+
+private fun prefs(ctx: Context) = ctx.getSharedPreferences("agm", Context.MODE_PRIVATE)
+
+fun loadName(ctx: Context): String = prefs(ctx).getString("name", "") ?: ""
+fun saveName(ctx: Context, name: String) { prefs(ctx).edit().putString("name", name).apply() }
+
+fun nowString(): String = SimpleDateFormat("dd/MM/yyyy  HH:mm", Locale.US).format(Date())
+
+fun loadResults(ctx: Context): List<ScoreEntry> {
+    return try {
+        val arr = JSONArray(prefs(ctx).getString("results", "[]") ?: "[]")
+        List(arr.length()) { i ->
+            val o = arr.getJSONObject(i)
+            ScoreEntry(o.optString("t"), o.optString("topic"), o.optInt("s"), o.optInt("n"), o.optString("d"))
+        }
+    } catch (e: Exception) {
+        emptyList()
+    }
+}
+
+fun addResult(ctx: Context, e: ScoreEntry) {
+    try {
+        val list = listOf(e) + loadResults(ctx)
+        val arr = JSONArray()
+        list.take(100).forEach {
+            arr.put(JSONObject().put("t", it.type).put("topic", it.topic).put("s", it.s).put("n", it.n).put("d", it.date))
+        }
+        prefs(ctx).edit().putString("results", arr.toString()).apply()
+    } catch (ex: Exception) {
+    }
+}
+
+fun clearResults(ctx: Context) { prefs(ctx).edit().putString("results", "[]").apply() }
+
+/* ---------------- مین اسکرین ---------------- */
+
+@Composable
+fun Header(name: String) {
+    Box(
+        Modifier.fillMaxWidth()
+            .background(Brush.horizontalGradient(listOf(BrandDark, Brand)))
+            .padding(horizontal = 18.dp, vertical = 14.dp)
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
+            Text("📚 عربی گرامر ماسٹر", fontSize = 22.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            if (name.isNotBlank()) {
+                Text("السلام علیکم، $name", fontSize = 14.sp, color = BrandLight)
+            }
+        }
+    }
+}
+
+@Composable
+fun WelcomeScreen(onSave: (String) -> Unit) {
+    var text by remember { mutableStateOf("") }
+    Box(
+        Modifier.fillMaxSize().background(Brush.verticalGradient(listOf(BrandDark, Brand))),
+        contentAlignment = Alignment.Center
+    ) {
+        Card(
+            modifier = Modifier.fillMaxWidth().padding(24.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            shape = RoundedCornerShape(24.dp)
+        ) {
+            Column(
+                Modifier.fillMaxWidth().padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(14.dp)
+            ) {
+                Text("📚", fontSize = 56.sp)
+                Text("عربی گرامر ماسٹر", fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Brand)
+                Text("خوش آمدید! اپنا نام لکھیں تاکہ آپ کا پروفائل اور اسکور محفوظ ہو سکے۔",
+                    fontSize = 15.sp, lineHeight = 28.sp, color = Muted)
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = Modifier.fillMaxWidth(),
+                    shape = RoundedCornerShape(14.dp),
+                    placeholder = { Text("آپ کا نام", color = Muted) },
+                    singleLine = true,
+                    colors = OutlinedTextFieldDefaults.colors(
+                        focusedBorderColor = Brand,
+                        unfocusedBorderColor = Border
+                    )
+                )
+                BigButton("شروع کریں", onClick = {
+                    if (text.isNotBlank()) onSave(text.trim())
+                }, modifier = Modifier.fillMaxWidth())
+            }
+        }
+    }
+}
+
 @Composable
 fun GrammarApp() {
     val context = LocalContext.current
     val categories = remember { loadDatabase(context) }
+    var name by remember { mutableStateOf(loadName(context)) }
     var tab by remember { mutableStateOf(0) }
+
+    if (name.isBlank()) {
+        WelcomeScreen(onSave = { saveName(context, it); name = it })
+        return
+    }
 
     Scaffold(
         containerColor = Page,
-        topBar = {
-            CenterAlignedTopAppBar(
-                title = { Text("عربی گرامر ماسٹر", fontWeight = FontWeight.Bold, fontSize = 20.sp) },
-                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = BrandDark,
-                    titleContentColor = Color.White
-                )
-            )
-        },
+        topBar = { Header(name) },
         bottomBar = {
             NavigationBar(containerColor = Color.White) {
-                val items = listOf("📖" to "سیکھیں", "❓" to "کوئز", "📝" to "سیلف ٹیسٹ")
+                val items = listOf("📖" to "سیکھیں", "❓" to "کوئز", "📝" to "سیلف ٹیسٹ", "🏆" to "اسکور")
                 items.forEachIndexed { i, (icon, label) ->
                     NavigationBarItem(
                         selected = tab == i,
                         onClick = { tab = i },
                         icon = { Text(icon, fontSize = 20.sp) },
-                        label = { Text(label, fontSize = 12.sp) },
+                        label = { Text(label, fontSize = 11.sp) },
                         colors = NavigationBarItemDefaults.colors(
                             selectedTextColor = Brand,
                             indicatorColor = BrandLight
@@ -103,9 +205,138 @@ fun GrammarApp() {
             when (tab) {
                 0 -> LearnScreen(categories)
                 1 -> QuizScreen(categories)
-                else -> SelfTestScreen(categories)
+                2 -> SelfTestScreen(categories)
+                else -> ScoreScreen(name, onNameChange = { saveName(context, it); name = it })
             }
         }
+    }
+}
+
+/* ---------------- اسکور بورڈ اور پروفائل ---------------- */
+
+@Composable
+fun StatBox(value: String, label: String, modifier: Modifier = Modifier) {
+    Surface(color = BrandLight, shape = RoundedCornerShape(14.dp), modifier = modifier) {
+        Column(
+            Modifier.padding(vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(value, fontSize = 22.sp, fontWeight = FontWeight.Bold, color = BrandDark)
+            Text(label, fontSize = 11.sp, color = Brand)
+        }
+    }
+}
+
+@Composable
+fun ScoreScreen(name: String, onNameChange: (String) -> Unit) {
+    val context = LocalContext.current
+    var results by remember { mutableStateOf(loadResults(context)) }
+    var editing by remember { mutableStateOf(false) }
+    var draft by remember { mutableStateOf(name) }
+
+    val total = results.size
+    val avg = if (total == 0) 0 else results.map { if (it.n == 0) 0 else it.s * 100 / it.n }.sum() / total
+    val best = results.map { if (it.n == 0) 0 else it.s * 100 / it.n }.maxOrNull() ?: 0
+
+    LazyColumn(
+        modifier = Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(14.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        item {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                border = BorderStroke(1.dp, Border),
+                shape = RoundedCornerShape(18.dp)
+            ) {
+                Column(Modifier.fillMaxWidth().padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                    androidx.compose.foundation.layout.Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        Box(
+                            Modifier.size(56.dp).clip(CircleShape).background(Brand),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(name.take(1), fontSize = 26.sp, fontWeight = FontWeight.Bold, color = Color.White)
+                        }
+                        Column(Modifier.weight(1f)) {
+                            Text(name, fontSize = 20.sp, fontWeight = FontWeight.Bold, color = BrandDark)
+                            Text("طالب علم", fontSize = 12.sp, color = Muted)
+                        }
+                        Text(
+                            if (editing) "منسوخ" else "نام بدلیں",
+                            fontSize = 13.sp, color = Brand, fontWeight = FontWeight.Bold,
+                            modifier = Modifier.clickable { editing = !editing; draft = name }.padding(6.dp)
+                        )
+                    }
+                    if (editing) {
+                        OutlinedTextField(
+                            value = draft,
+                            onValueChange = { draft = it },
+                            modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(14.dp),
+                            singleLine = true,
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedBorderColor = Brand, unfocusedBorderColor = Border
+                            )
+                        )
+                        BigButton("محفوظ کریں", onClick = {
+                            if (draft.isNotBlank()) { onNameChange(draft.trim()); editing = false }
+                        }, modifier = Modifier.fillMaxWidth())
+                    }
+                    androidx.compose.foundation.layout.Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                        StatBox("$total", "کل ٹیسٹ", Modifier.weight(1f))
+                        StatBox("$avg%", "اوسط", Modifier.weight(1f))
+                        StatBox("$best%", "بہترین", Modifier.weight(1f))
+                    }
+                }
+            }
+        }
+        item { Text("🏆 اسکور بورڈ", fontSize = 18.sp, fontWeight = FontWeight.Bold, color = Brand) }
+        if (results.isEmpty()) {
+            item { Text("ابھی کوئی نتیجہ نہیں۔ کوئز یا سیلف ٹیسٹ مکمل کریں۔", color = Muted, lineHeight = 26.sp) }
+        }
+        items(results) { r ->
+            val pct = if (r.n == 0) 0 else r.s * 100 / r.n
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(containerColor = Color.White),
+                border = BorderStroke(1.dp, Border),
+                shape = RoundedCornerShape(14.dp)
+            ) {
+                androidx.compose.foundation.layout.Row(
+                    Modifier.fillMaxWidth().padding(14.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text(if (r.type == "کوئز") "❓" else "📝", fontSize = 24.sp)
+                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(2.dp)) {
+                        Text(r.type, fontSize = 15.sp, fontWeight = FontWeight.Bold)
+                        Text(r.topic, fontSize = 12.sp, color = Muted, lineHeight = 20.sp)
+                        Text(r.date, fontSize = 11.sp, color = Muted)
+                    }
+                    Surface(
+                        color = if (pct >= 70) Good else if (pct >= 40) Amber else Bad,
+                        shape = RoundedCornerShape(10.dp)
+                    ) {
+                        Column(Modifier.padding(horizontal = 12.dp, vertical = 6.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                            Text("${r.s}/${r.n}", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                            Text("$pct%", fontSize = 11.sp, color = Muted)
+                        }
+                    }
+                }
+            }
+        }
+        if (results.isNotEmpty()) {
+            item {
+                BigButton("اسکور بورڈ صاف کریں", onClick = {
+                    clearResults(context); results = emptyList()
+                }, filled = false, modifier = Modifier.fillMaxWidth())
+            }
+        }
+        item { Spacer(Modifier.height(12.dp)) }
     }
 }
 
@@ -433,6 +664,7 @@ fun buildQuestions(categories: List<Category>, scopeKey: String, count: Int = 10
 
 @Composable
 fun QuizScreen(categories: List<Category>) {
+    val context = LocalContext.current
     var scope by remember { mutableStateOf("all") }
     var questions by remember { mutableStateOf<List<Question>>(emptyList()) }
     var started by remember { mutableStateOf(false) }
@@ -526,7 +758,12 @@ fun QuizScreen(categories: List<Category>) {
                 )
                 BigButton(
                     if (index == questions.size - 1) "نتیجہ دیکھیں" else "اگلا سوال",
-                    onClick = { index += 1; selected = null },
+                    onClick = {
+                        if (index == questions.size - 1) {
+                            addResult(context, ScoreEntry("کوئز", scopeText(categories, scope), score, questions.size, nowString()))
+                        }
+                        index += 1; selected = null
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -540,6 +777,7 @@ data class CardItem(val cat: Category, val row: Row)
 
 @Composable
 fun SelfTestScreen(categories: List<Category>) {
+    val context = LocalContext.current
     var scope by remember { mutableStateOf("all") }
     var deck by remember { mutableStateOf<List<CardItem>>(emptyList()) }
     var started by remember { mutableStateOf(false) }
@@ -637,10 +875,19 @@ fun SelfTestScreen(categories: List<Category>) {
                 BigButton("جواب دکھائیں", onClick = { revealed = true }, modifier = Modifier.fillMaxWidth())
             } else {
                 BigButton("✓ مجھے آتا ہے", onClick = {
-                    known += 1; index += 1; revealed = false
+                    val newKnown = known + 1
+                    known = newKnown
+                    if (index == deck.size - 1) {
+                        addResult(context, ScoreEntry("سیلف ٹیسٹ", scopeText(categories, scope), newKnown, deck.size, nowString()))
+                    }
+                    index += 1; revealed = false
                 }, modifier = Modifier.fillMaxWidth())
                 BigButton("✗ یاد کرنا ہے", onClick = {
-                    missed = missed + item; index += 1; revealed = false
+                    missed = missed + item
+                    if (index == deck.size - 1) {
+                        addResult(context, ScoreEntry("سیلف ٹیسٹ", scopeText(categories, scope), known, deck.size, nowString()))
+                    }
+                    index += 1; revealed = false
                 }, filled = false, modifier = Modifier.fillMaxWidth())
             }
         }
