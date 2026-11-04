@@ -25,9 +25,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -366,21 +369,72 @@ fun DropdownField(
 }
 
 /* ============ جدول ============ */
+/** لفظ عربی ہے یا نہیں (اعراب یا عربی مخصوص حروف سے پہچان) */
+fun isArabicToken(t: String): Boolean {
+    for (ch in t) {
+        val c = ch.code
+        if (c in 0x064B..0x0652 || c == 0x0670 || c == 0x0671) return true
+        if (ch == 'ك' || ch == 'ي' || ch == 'ة' || ch == 'ى') return true
+    }
+    return false
+}
+
+/** عربی الفاظ کے لیے الگ (نسخ) فونٹ اور بڑا سائز، باقی متن عام فونٹ میں */
+@Composable
+fun MixedText(
+    text: String,
+    modifier: Modifier = Modifier,
+    size: Int = 14,
+    arabicSize: Int = 19,
+    color: Color = Color(0xFF0F172A),
+    arabicColor: Color = Brand,
+    bold: Boolean = false,
+    align: TextAlign = TextAlign.Center,
+    forceArabic: Boolean = false
+) {
+    val tokens = text.split(" ")
+    val hasArabic = forceArabic || tokens.any { isArabicToken(it) }
+    val annotated = buildAnnotatedString {
+        tokens.forEachIndexed { i, tok ->
+            if (forceArabic || isArabicToken(tok)) {
+                withStyle(
+                    SpanStyle(
+                        fontFamily = FontFamily.Serif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = arabicSize.sp,
+                        color = arabicColor
+                    )
+                ) { append(tok) }
+            } else {
+                withStyle(
+                    SpanStyle(
+                        fontSize = size.sp,
+                        color = color,
+                        fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal
+                    )
+                ) { append(tok) }
+            }
+            if (i < tokens.size - 1) append(" ")
+        }
+    }
+    Text(
+        text = annotated,
+        textAlign = align,
+        lineHeight = (if (hasArabic) arabicSize + 14 else size + 10).sp,
+        modifier = modifier
+    )
+}
+
 @Composable
 fun CellContent(raw: String, col: Int) {
     val lines = raw.split("\n")
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         lines.forEachIndexed { i, line ->
             if (i == 0) {
-                if (col >= 3) {
-                    Text(line, fontSize = 19.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Serif,
-                        color = Brand, lineHeight = 30.sp, textAlign = TextAlign.Center)
-                } else if (col == 0) {
-                    Text(line, fontSize = 14.sp, fontWeight = FontWeight.Bold, color = BrandDark,
-                        lineHeight = 24.sp, textAlign = TextAlign.Center)
-                } else {
-                    Text(line, fontSize = 14.sp, color = Color(0xFF0F172A),
-                        lineHeight = 24.sp, textAlign = TextAlign.Center)
+                when {
+                    col >= 3 -> MixedText(line, size = 14, arabicSize = 20, forceArabic = true)
+                    col == 0 -> MixedText(line, size = 14, arabicSize = 18, color = BrandDark, arabicColor = BrandDark, bold = true)
+                    else -> MixedText(line, size = 14, arabicSize = 20)
                 }
             } else {
                 Text(line, fontSize = 11.sp, color = Muted, lineHeight = 18.sp, textAlign = TextAlign.Center)
@@ -719,8 +773,8 @@ fun QuizScreen(categories: List<Category>) {
                 border = BorderStroke(1.dp, Border),
                 shape = RoundedCornerShape(16.dp)
             ) {
-                Text(q.prompt, fontSize = 18.sp, lineHeight = 32.sp, fontWeight = FontWeight.Bold,
-                    modifier = Modifier.fillMaxWidth().padding(16.dp))
+                MixedText(q.prompt, size = 17, arabicSize = 23, bold = true, arabicColor = Brand,
+                    align = TextAlign.Start, modifier = Modifier.fillMaxWidth().padding(16.dp))
             }
             q.options.forEachIndexed { i, opt ->
                 val sel = selected
@@ -745,7 +799,7 @@ fun QuizScreen(categories: List<Category>) {
                         if (i == q.correct) score += 1
                     }
                 ) {
-                    Text(opt, fontSize = 16.sp, lineHeight = 28.sp, modifier = Modifier.padding(14.dp))
+                    MixedText(opt, size = 16, arabicSize = 21, align = TextAlign.Start, modifier = Modifier.padding(14.dp))
                 }
             }
             if (selected != null) {
@@ -852,21 +906,20 @@ fun SelfTestScreen(categories: List<Category>) {
                         Text(cat.badge, fontSize = 13.sp, fontWeight = FontWeight.Bold, color = Brand)
                     }
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Text(item.row.cells[0], fontSize = 22.sp, fontWeight = FontWeight.Bold,
-                            lineHeight = 36.sp, color = BrandDark)
+                        MixedText(item.row.cells[0], size = 20, arabicSize = 25, bold = true, color = BrandDark,
+                            arabicColor = Brand, align = TextAlign.Start)
                         if (revealed) {
                             for (i in 1 until cat.columns.size) {
                                 val value = item.row.cells.getOrElse(i) { "" }
                                 if (value.isBlank()) continue
                                 Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                                     Text(cat.columns[i], fontSize = 12.sp, color = Muted)
-                                    Text(
+                                    MixedText(
                                         value.replace("\n", "  "),
-                                        fontSize = if (i >= 3) 22.sp else 16.sp,
-                                        fontWeight = if (i >= 3) FontWeight.Bold else FontWeight.Normal,
-                                        fontFamily = if (i >= 3) FontFamily.Serif else FontFamily.Default,
-                                        color = if (i >= 3) Brand else Color(0xFF0F172A),
-                                        lineHeight = if (i >= 3) 36.sp else 28.sp
+                                        size = 16,
+                                        arabicSize = 22,
+                                        forceArabic = i >= 3,
+                                        align = TextAlign.Start
                                     )
                                 }
                             }
