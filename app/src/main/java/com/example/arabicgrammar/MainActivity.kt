@@ -185,7 +185,7 @@ fun GrammarApp() {
                     NavigationBar(containerColor = Color.White) {
                         val items = listOf(
                             "📖" to tr("سیکھیں", "Learn"),
-                            "📘" to tr("نحو", "Nahw"),
+                            "📘" to tr("نحو و صرف", "Nahw & Sarf"),
                             "❓" to tr("کوئز", "Quiz"),
                             "📝" to tr("سیلف ٹیسٹ", "Self Test"),
                             "🏆" to tr("اسکور", "Score")
@@ -208,7 +208,7 @@ fun GrammarApp() {
                 Box(Modifier.padding(padding).fillMaxSize()) {
                     when (tab) {
                         0 -> LearnScreen(categories)
-                        1 -> LessonsScreen()
+                        1 -> NahwSarfScreen()
                         2 -> QuizScreen(categories)
                         3 -> SelfTestScreen(categories)
                         else -> ScoreScreen(name, onNameChange = { saveName(context, it); name = it })
@@ -1064,6 +1064,7 @@ fun ScoreScreen(name: String, onNameChange: (String) -> Unit) {
                                     when {
                                         isQuiz -> tr("❓ کوئز", "❓ Quiz")
                                         r.type == "nahw" -> tr("📘 نحو", "📘 Nahw")
+                                        r.type == "sarf" -> tr("🔧 صرف", "🔧 Sarf")
                                         else -> tr("📝 ٹیسٹ", "📝 Test")
                                     },
                                     Modifier.weight(1.1f), fontSize = 12.sp, fontWeight = FontWeight.Bold
