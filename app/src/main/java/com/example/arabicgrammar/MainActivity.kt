@@ -167,12 +167,18 @@ fun GrammarApp() {
     var name by remember { mutableStateOf(loadName(context)) }
     var en by remember { mutableStateOf(loadLangEn(context)) }
     var tab by remember { mutableStateOf(0) }
+    // 0 = Splash، 1 = Onboarding، 2 = مرکزی ایپ / نام والی اسکرین
+    var stage by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(0) }
 
     CompositionLocalProvider(
         LocalEn provides en,
         LocalLayoutDirection provides (if (en) LayoutDirection.Ltr else LayoutDirection.Rtl)
     ) {
-        if (name.isBlank()) {
+        if (stage == 0) {
+            SplashScreen(onDone = { stage = if (name.isBlank()) 1 else 2 })
+        } else if (stage == 1) {
+            OnboardingScreen(onFinish = { stage = 2 })
+        } else if (name.isBlank()) {
             WelcomeScreen(
                 onToggleLang = { en = !en; saveLang(context, en) },
                 onSave = { saveName(context, it); name = it }
@@ -283,7 +289,7 @@ fun WelcomeScreen(onToggleLang: () -> Unit, onSave: (String) -> Unit) {
                         modifier = Modifier.padding(horizontal = 16.dp, vertical = 7.dp)
                     )
                 }
-                Text("📚", fontSize = 56.sp)
+                QuranLogo(110.dp)
                 Text(tr("عربی گرامر ماسٹر", "Arabic Grammar Master"),
                     fontSize = 24.sp, fontWeight = FontWeight.Bold, color = Brand)
                 Text(
