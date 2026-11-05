@@ -1,13 +1,14 @@
 package com.example.arabicgrammar
 
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,31 +16,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -47,29 +42,29 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /* ============ Splash + Onboarding رنگ ============ */
 private val IntroGreen = Color(0xFF0B6E4F)
 private val IntroDark = Color(0xFF064E3B)
 private val IntroGold = Color(0xFFD4A017)
 
+/** ایپ چلنے کے دوران Splash / Onboarding صرف ایک بار دکھانے کے لیے */
+var introDone = false
+
 /* ============ لوگو: القرآن ============ */
 @Composable
-fun QuranLogo(size: Dp) {
+fun QuranLogo(logoSize: Dp) {
     Box(
         modifier = Modifier
-            .size(size)
-            .shadow(12.dp, CircleShape)
+            .size(logoSize)
             .clip(CircleShape)
             .background(Color.White)
-            .border(size * 0.04f, IntroGold, CircleShape),
+            .border(logoSize * 0.04f, IntroGold, CircleShape),
         contentAlignment = Alignment.Center
     ) {
         Text(
             "القرآن",
-            fontSize = (size.value * 0.28f).sp,
+            fontSize = (logoSize.value * 0.28f).sp,
             fontWeight = FontWeight.Bold,
             color = IntroGreen,
             maxLines = 1
@@ -80,16 +75,11 @@ fun QuranLogo(size: Dp) {
 /* ============ Splash Screen ============ */
 @Composable
 fun SplashScreen(onDone: () -> Unit) {
-    var started by remember { mutableStateOf(false) }
-    val alpha by animateFloatAsState(
-        targetValue = if (started) 1f else 0f,
-        animationSpec = tween(1000),
-        label = "splashAlpha"
-    )
-    LaunchedEffect(Unit) {
-        started = true
-        delay(2800)
-        onDone()
+    DisposableEffect(Unit) {
+        val handler = Handler(Looper.getMainLooper())
+        val task = Runnable { onDone() }
+        handler.postDelayed(task, 2500L)
+        onDispose { handler.removeCallbacks(task) }
     }
     Box(
         Modifier
@@ -97,10 +87,7 @@ fun SplashScreen(onDone: () -> Unit) {
             .background(Brush.verticalGradient(listOf(IntroGreen, IntroDark))),
         contentAlignment = Alignment.Center
     ) {
-        Column(
-            Modifier.alpha(alpha),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
             QuranLogo(160.dp)
             Spacer(Modifier.height(24.dp))
             Text(
@@ -150,37 +137,60 @@ private val onboardPages = listOf(
 fun OnboardingScreen(onFinish: () -> Unit) {
     // Skip کا بٹن ہمیشہ دائیں طرف رہے، چاہے ایپ اردو (RTL) میں ہو
     CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
-        val pagerState = rememberPagerState(pageCount = { onboardPages.size })
-        val scope = rememberCoroutineScope()
-        val isLast = pagerState.currentPage == onboardPages.size - 1
+        var page by remember { mutableStateOf(0) }
+        val lastIndex = onboardPages.size - 1
+        val isLast = page == lastIndex
 
         Column(Modifier.fillMaxSize().background(Color.White)) {
             // Skip (آخری صفحے پر چھپ جاتا ہے، جگہ برقرار رہتی ہے)
             Box(
-                Modifier.fillMaxWidth().height(64.dp).padding(top = 12.dp, end = 8.dp),
+                Modifier.fillMaxWidth().height(60.dp).padding(end = 20.dp),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 if (!isLast) {
-                    TextButton(onClick = onFinish) {
-                        Text("Skip", fontSize = 16.sp, color = IntroGreen)
-                    }
+                    Text(
+                        "Skip",
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = IntroGreen,
+                        modifier = Modifier
+                            .clickable { onFinish() }
+                            .padding(horizontal = 12.dp, vertical = 10.dp)
+                    )
                 }
             }
 
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.weight(1f)
-            ) { page ->
+            // صفحے کا مواد (دائیں بائیں سوائپ بھی کر سکتے ہیں)
+            Box(
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .pointerInput(Unit) {
+                        var total = 0f
+                        detectHorizontalDragGestures(
+                            onDragStart = { total = 0f },
+                            onDragEnd = {
+                                if (total < -80f && page < lastIndex) {
+                                    page += 1
+                                } else if (total > 80f && page > 0) {
+                                    page -= 1
+                                }
+                            },
+                            onDragCancel = { },
+                            onHorizontalDrag = { _, amount -> total += amount }
+                        )
+                    }
+            ) {
                 OnboardPageContent(onboardPages[page])
             }
 
             // نقطے
-            Row(
+            androidx.compose.foundation.layout.Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ) {
-                repeat(onboardPages.size) { i ->
-                    val active = i == pagerState.currentPage
+                for (i in 0..lastIndex) {
+                    val active = i == page
                     Box(
                         Modifier
                             .padding(horizontal = 4.dp)
@@ -192,23 +202,29 @@ fun OnboardingScreen(onFinish: () -> Unit) {
                 }
             }
 
-            Button(
-                onClick = {
-                    if (isLast) onFinish()
-                    else scope.launch { pagerState.animateScrollToPage(pagerState.currentPage + 1) }
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = IntroGreen, contentColor = Color.White),
+            // Next / Get Started
+            Surface(
                 shape = RoundedCornerShape(14.dp),
+                color = IntroGreen,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(start = 24.dp, end = 24.dp, top = 24.dp, bottom = 28.dp)
-                    .height(52.dp)
+                    .clickable {
+                        if (isLast) {
+                            onFinish()
+                        } else {
+                            page += 1
+                        }
+                    }
             ) {
-                Text(
-                    if (isLast) "Get Started" else "Next",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.SemiBold
-                )
+                Box(Modifier.padding(vertical = 15.dp), contentAlignment = Alignment.Center) {
+                    Text(
+                        if (isLast) "Get Started" else "Next",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.SemiBold,
+                        color = Color.White
+                    )
+                }
             }
         }
     }
@@ -225,7 +241,7 @@ private fun OnboardPageContent(p: OnboardPage) {
         verticalArrangement = Arrangement.Center
     ) {
         Box(
-            Modifier.size(140.dp).clip(CircleShape).background(IntroGreen.copy(alpha = 0.1f)),
+            Modifier.size(140.dp).clip(CircleShape).background(Color(0xFFE6F2EE)),
             contentAlignment = Alignment.Center
         ) {
             Text(p.emoji, fontSize = 64.sp)

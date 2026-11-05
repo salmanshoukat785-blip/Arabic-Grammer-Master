@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -166,40 +167,65 @@ fun GrammarApp() {
     val categories = remember { loadDatabase(context).map { cleanCategory(it) } }
     var name by remember { mutableStateOf(loadName(context)) }
     var en by remember { mutableStateOf(loadLangEn(context)) }
-    var tab by remember { mutableStateOf(0) }
+    var route by remember { mutableStateOf(R_HOME) }
     // 0 = Splash، 1 = Onboarding، 2 = مرکزی ایپ / نام والی اسکرین
-    var stage by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(0) }
+    var stage by remember { mutableStateOf(if (introDone) 2 else 0) }
 
     CompositionLocalProvider(
         LocalEn provides en,
         LocalLayoutDirection provides (if (en) LayoutDirection.Ltr else LayoutDirection.Rtl)
     ) {
         if (stage == 0) {
-            SplashScreen(onDone = { stage = if (name.isBlank()) 1 else 2 })
+            SplashScreen(onDone = {
+                if (name.isBlank()) {
+                    stage = 1
+                } else {
+                    introDone = true
+                    stage = 2
+                }
+            })
         } else if (stage == 1) {
-            OnboardingScreen(onFinish = { stage = 2 })
+            OnboardingScreen(onFinish = {
+                introDone = true
+                stage = 2
+            })
         } else if (name.isBlank()) {
             WelcomeScreen(
                 onToggleLang = { en = !en; saveLang(context, en) },
                 onSave = { saveName(context, it); name = it }
             )
         } else {
+            BackHandler(enabled = route != R_HOME) { route = R_HOME }
+
+            val navSelected = when (route) {
+                R_HOME -> 0
+                R_LEARN, R_NAHW, R_QURAN -> 1
+                R_QUIZ, R_SELF -> 2
+                R_SCORE -> 3
+                else -> 4
+            }
+            val navRoutes = listOf(R_HOME, R_LEARN, R_QUIZ, R_SCORE, R_PROFILE)
+
             Scaffold(
                 containerColor = Page,
-                topBar = { Header(name, onToggleLang = { en = !en; saveLang(context, en) }) },
+                topBar = {
+                    if (route != R_HOME) {
+                        Header(name, onToggleLang = { en = !en; saveLang(context, en) })
+                    }
+                },
                 bottomBar = {
                     NavigationBar(containerColor = Color.White) {
                         val items = listOf(
-                            "📖" to tr("سیکھیں", "Learn"),
-                            "📘" to tr("نحو و صرف", "Nahw & Sarf"),
-                            "❓" to tr("کوئز", "Quiz"),
-                            "📝" to tr("سیلف ٹیسٹ", "Self Test"),
-                            "🏆" to tr("اسکور", "Score")
+                            "🏠" to tr("ہوم", "Home"),
+                            "📖" to tr("اسباق", "Lessons"),
+                            "✏️" to tr("پریکٹس", "Practice"),
+                            "🏆" to tr("اسکور", "Score"),
+                            "👤" to tr("پروفائل", "Profile")
                         )
                         items.forEachIndexed { i, (icon, label) ->
                             NavigationBarItem(
-                                selected = tab == i,
-                                onClick = { tab = i },
+                                selected = navSelected == i,
+                                onClick = { route = navRoutes[i] },
                                 icon = { Text(icon, fontSize = 20.sp) },
                                 label = { Text(label, fontSize = 11.sp) },
                                 colors = NavigationBarItemDefaults.colors(
@@ -211,13 +237,47 @@ fun GrammarApp() {
                     }
                 }
             ) { padding ->
-                Box(Modifier.padding(padding).fillMaxSize()) {
-                    when (tab) {
-                        0 -> LearnScreen(categories)
-                        1 -> NahwSarfScreen()
-                        2 -> QuizScreen(categories)
-                        3 -> SelfTestScreen(categories)
-                        else -> ScoreScreen(name, onNameChange = { saveName(context, it); name = it })
+                Column(Modifier.padding(padding).fillMaxSize()) {
+                    if (route >= R_LEARN && route <= R_QURAN) {
+                        Segmented(
+                            listOf(
+                                tr("📖 گرامر", "📖 Grammar"),
+                                tr("📘 نحو و صرف", "📘 Nahw & Sarf"),
+                                tr("🕌 قرآن", "🕌 Quran")
+                            ),
+                            route - R_LEARN,
+                            { route = R_LEARN + it },
+                            Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+                        )
+                    }
+                    if (route == R_QUIZ || route == R_SELF) {
+                        Segmented(
+                            listOf(tr("❓ کوئز", "❓ Quiz"), tr("📝 سیلف ٹیسٹ", "📝 Self Test")),
+                            route - R_QUIZ,
+                            { route = R_QUIZ + it },
+                            Modifier.padding(horizontal = 14.dp, vertical = 8.dp)
+                        )
+                    }
+                    Box(Modifier.weight(1f).fillMaxWidth()) {
+                        when (route) {
+                            R_HOME -> HomeScreen(
+                                name = name,
+                                categories = categories,
+                                onOpen = { route = it },
+                                onToggleLang = { en = !en; saveLang(context, en) }
+                            )
+                            R_LEARN -> LearnScreen(categories)
+                            R_NAHW -> NahwSarfScreen()
+                            R_QURAN -> QuranScreen()
+                            R_QUIZ -> QuizScreen(categories)
+                            R_SELF -> SelfTestScreen(categories)
+                            R_SCORE -> ScoreScreen(name, onNameChange = { saveName(context, it); name = it })
+                            else -> ProfileScreen(
+                                name = name,
+                                onNameChange = { saveName(context, it); name = it },
+                                onToggleLang = { en = !en; saveLang(context, en) }
+                            )
+                        }
                     }
                 }
             }
