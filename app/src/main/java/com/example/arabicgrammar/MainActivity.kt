@@ -1065,6 +1065,7 @@ fun ScoreScreen(name: String, onNameChange: (String) -> Unit) {
                                         isQuiz -> tr("❓ کوئز", "❓ Quiz")
                                         r.type == "nahw" -> tr("📘 نحو", "📘 Nahw")
                                         r.type == "sarf" -> tr("🔧 صرف", "🔧 Sarf")
+                                        r.type == "quran" -> tr("📖 قرآن", "📖 Quran")
                                         else -> tr("📝 ٹیسٹ", "📝 Test")
                                     },
                                     Modifier.weight(1.1f), fontSize = 12.sp, fontWeight = FontWeight.Bold

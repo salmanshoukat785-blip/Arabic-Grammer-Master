@@ -183,12 +183,16 @@ fun NahwSarfScreen() {
     var mode by remember { mutableStateOf(0) }
     Column(Modifier.fillMaxSize()) {
         Segmented(
-            listOf(tr("📘 نحو", "📘 Nahw"), tr("🔧 صرف", "🔧 Sarf")),
+            listOf(tr("📘 نحو", "📘 Nahw"), tr("🔧 صرف", "🔧 Sarf"), tr("📖 قرآن", "📖 Quran")),
             mode, { mode = it },
             Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
         )
         Box(Modifier.weight(1f).fillMaxWidth()) {
-            if (mode == 0) LessonsScreen() else SarfScreen()
+            when (mode) {
+                0 -> LessonsScreen()
+                1 -> SarfScreen()
+                else -> QuranScreen()
+            }
         }
     }
 }
