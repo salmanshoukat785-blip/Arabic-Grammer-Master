@@ -2,6 +2,7 @@ package com.example.arabicgrammar
 
 import android.content.Context
 import android.os.Bundle
+import android.graphics.Typeface
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.compose.BackHandler
@@ -27,10 +28,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -389,6 +392,19 @@ fun BigButton(text: String, onClick: () -> Unit, filled: Boolean = true, modifie
     }
 }
 
+/* اردو (نستعلیق) فونٹ: assets میں NotoNastaliqUrdu-Regular.ttf ہو تو استعمال ہوگا، ورنہ عام فونٹ */
+@Composable
+fun urduFontFamily(): FontFamily? {
+    val context = LocalContext.current
+    return remember {
+        try {
+            FontFamily(Typeface.createFromAsset(context.assets, "NotoNastaliqUrdu-Regular.ttf"))
+        } catch (e: Exception) {
+            null
+        }
+    }
+}
+
 @Composable
 fun DropdownField(
     label: String,
@@ -397,6 +413,14 @@ fun DropdownField(
     onSelect: (String) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
+    val en = LocalEn.current
+    val urdu = urduFontFamily()
+    // اردو میں: دائیں سے بائیں ترتیب (نمبر دائیں طرف) اور اردو (نستعلیق) فونٹ
+    val textStyle = if (en) {
+        TextStyle(textDirection = TextDirection.Ltr)
+    } else {
+        TextStyle(textDirection = TextDirection.Rtl, fontFamily = urdu, lineHeight = 30.sp)
+    }
     Column(Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Text(label, fontSize = 12.sp, fontWeight = FontWeight.Bold, color = Muted)
         Box(Modifier.fillMaxWidth()) {
@@ -413,9 +437,10 @@ fun DropdownField(
                     Text(
                         selectedText,
                         modifier = Modifier.weight(1f),
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 15.sp,
-                        color = Color(0xFF0F172A)
+                        fontWeight = if (en) FontWeight.Bold else FontWeight.Normal,
+                        fontSize = if (en) 15.sp else 17.sp,
+                        color = Color(0xFF0F172A),
+                        style = textStyle
                     )
                     Text("▼", fontSize = 12.sp, color = Brand)
                 }
@@ -427,7 +452,14 @@ fun DropdownField(
             ) {
                 options.forEach { (key, text) ->
                     DropdownMenuItem(
-                        text = { Text(text, fontSize = 15.sp) },
+                        text = {
+                            Text(
+                                text,
+                                fontSize = if (en) 15.sp else 17.sp,
+                                style = textStyle,
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                        },
                         onClick = { onSelect(key); expanded = false }
                     )
                 }
