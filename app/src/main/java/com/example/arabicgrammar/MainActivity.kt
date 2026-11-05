@@ -42,19 +42,19 @@ import java.util.Date
 import java.util.Locale
 
 /* ============ رنگ (ہلکا آسمانی) ============ */
-private val Brand = Color(0xFF0284C7)
-private val BrandDark = Color(0xFF075985)
-private val BrandLight = Color(0xFFE0F2FE)
-private val Page = Color(0xFFF0F9FF)
-private val Border = Color(0xFFBAE6FD)
-private val Muted = Color(0xFF64748B)
-private val ExampleTint = Color(0xFFF0F9FF)
-private val Amber = Color(0xFFFEF3C7)
-private val AmberText = Color(0xFF92400E)
-private val Good = Color(0xFFDCFCE7)
-private val GoodText = Color(0xFF15803D)
-private val Bad = Color(0xFFFEE2E2)
-private val BadText = Color(0xFFB91C1C)
+val Brand = Color(0xFF0284C7)
+val BrandDark = Color(0xFF075985)
+val BrandLight = Color(0xFFE0F2FE)
+val Page = Color(0xFFF0F9FF)
+val Border = Color(0xFFBAE6FD)
+val Muted = Color(0xFF64748B)
+val ExampleTint = Color(0xFFF0F9FF)
+val Amber = Color(0xFFFEF3C7)
+val AmberText = Color(0xFF92400E)
+val Good = Color(0xFFDCFCE7)
+val GoodText = Color(0xFF15803D)
+val Bad = Color(0xFFFEE2E2)
+val BadText = Color(0xFFB91C1C)
 
 /* ============ زبان (اردو / English) ============ */
 val LocalEn = compositionLocalOf { false }
@@ -185,6 +185,7 @@ fun GrammarApp() {
                     NavigationBar(containerColor = Color.White) {
                         val items = listOf(
                             "📖" to tr("سیکھیں", "Learn"),
+                            "📘" to tr("نحو", "Nahw"),
                             "❓" to tr("کوئز", "Quiz"),
                             "📝" to tr("سیلف ٹیسٹ", "Self Test"),
                             "🏆" to tr("اسکور", "Score")
@@ -207,8 +208,9 @@ fun GrammarApp() {
                 Box(Modifier.padding(padding).fillMaxSize()) {
                     when (tab) {
                         0 -> LearnScreen(categories)
-                        1 -> QuizScreen(categories)
-                        2 -> SelfTestScreen(categories)
+                        1 -> LessonsScreen()
+                        2 -> QuizScreen(categories)
+                        3 -> SelfTestScreen(categories)
                         else -> ScoreScreen(name, onNameChange = { saveName(context, it); name = it })
                     }
                 }
@@ -1059,7 +1061,11 @@ fun ScoreScreen(name: String, onNameChange: (String) -> Unit) {
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
-                                    if (isQuiz) tr("❓ کوئز", "❓ Quiz") else tr("📝 ٹیسٹ", "📝 Test"),
+                                    when {
+                                        isQuiz -> tr("❓ کوئز", "❓ Quiz")
+                                        r.type == "nahw" -> tr("📘 نحو", "📘 Nahw")
+                                        else -> tr("📝 ٹیسٹ", "📝 Test")
+                                    },
                                     Modifier.weight(1.1f), fontSize = 12.sp, fontWeight = FontWeight.Bold
                                 )
                                 Text(r.topic, Modifier.weight(2f), fontSize = 11.sp, color = Muted, lineHeight = 18.sp)
