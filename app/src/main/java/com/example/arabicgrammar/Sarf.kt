@@ -504,7 +504,7 @@ fun SarfPractice() {
                     if (index == questions.size - 1) tr("نتیجہ دیکھیں", "See Result") else tr("اگلا سوال", "Next Question"),
                     onClick = {
                         if (index == questions.size - 1) {
-                            addResult(context, ScoreEntry("sarf", tr("صرف مشق", "Sarf Practice"), score, questions.size, nowString()))
+                            addResult(context, ScoreEntry("sarf", if (en) "Sarf Practice" else "صرف مشق", score, questions.size, nowString()))
                         }
                         index += 1; selected = null
                     },
