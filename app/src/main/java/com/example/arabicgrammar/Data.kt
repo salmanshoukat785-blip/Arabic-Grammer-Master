@@ -15,11 +15,13 @@ data class Category(
     val rule: String,
     val note: String,
     val rows: List<Row>,
-    val examples: List<Example>
+    val examples: List<Example>,
+    // فلٹر کے لیے اردو قطاریں (انگریزی میں بھی فلٹر اردو متن سے ہوتا ہے)
+    val sourceRows: List<Row> = rows
 )
 
-fun loadDatabase(context: Context): List<Category> {
-    val text = context.assets.open("database.json").bufferedReader(Charsets.UTF_8).use { it.readText() }
+fun loadDatabase(context: Context, fileName: String = "database.json"): List<Category> {
+    val text = context.assets.open(fileName).bufferedReader(Charsets.UTF_8).use { it.readText() }
     val root = JSONObject(text)
     val result = mutableListOf<Category>()
     val keys = root.keys()
@@ -59,7 +61,8 @@ fun loadDatabase(context: Context): List<Category> {
 
 fun filterRows(category: Category, subKey: String): List<Row> {
     if (subKey == "all") return category.rows
-    return category.rows.filter { row ->
+    return category.rows.filterIndexed { index, _ ->
+        val row = category.sourceRows.getOrNull(index) ?: category.rows[index]
         val c1 = row.cells[0]
         val all = row.cells.joinToString(" ").lowercase()
         when (subKey) {
@@ -95,4 +98,20 @@ fun searchRows(category: Category, query: String): List<Row> {
     val q = query.trim().lowercase()
     if (q.isEmpty()) return category.rows
     return category.rows.filter { r -> r.cells.any { it.lowercase().contains(q) } }
+}
+
+/** زبان کے مطابق اسباق کا ڈیٹا: اردو یا انگریزی (database_en.json) */
+fun loadCategories(context: Context, en: Boolean): List<Category> {
+    val urdu = loadDatabase(context).map { cleanCategory(it) }
+    val urduFinal = urdu.map { it.copy(sourceRows = it.rows) }
+    if (!en) return urduFinal
+    val english = try {
+        loadDatabase(context, "database_en.json").map { cleanCategory(it) }
+    } catch (e: Exception) {
+        return urduFinal
+    }
+    return english.map { e ->
+        val u = urdu.firstOrNull { it.key == e.key }
+        if (u != null && u.rows.size == e.rows.size) e.copy(sourceRows = u.rows) else e.copy(sourceRows = e.rows)
+    }
 }

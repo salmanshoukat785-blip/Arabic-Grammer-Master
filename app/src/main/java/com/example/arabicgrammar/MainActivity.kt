@@ -167,9 +167,10 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun GrammarApp() {
     val context = LocalContext.current
-    val categories = remember { loadDatabase(context).map { cleanCategory(it) } }
     var name by remember { mutableStateOf(loadName(context)) }
     var en by remember { mutableStateOf(loadLangEn(context)) }
+    // زبان بدلنے پر اسباق کا متن بھی بدل جائے
+    val categories = remember(en) { loadCategories(context, en) }
     var route by remember { mutableStateOf(R_HOME) }
     // 0 = Splash، 1 = Onboarding، 2 = مرکزی ایپ / نام والی اسکرین
     var stage by remember { mutableStateOf(if (introDone) 2 else 0) }
