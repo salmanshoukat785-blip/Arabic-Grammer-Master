@@ -1,0 +1,877 @@
+{
+ "irab": {
+  "title": "Grammatical Cases (I'rab)",
+  "badge": "Noun cases",
+  "subCategories": {
+   "all": "All grammatical cases",
+   "harakat": "I'rab by vowel marks (singular & broken plural)",
+   "huroof": "I'rab by letters (dual & sound plural)"
+  },
+  "columns": [
+   "Case",
+   "Sign / I'rab",
+   "Type of I'rab",
+   "Example"
+  ],
+  "rows": [
+   {
+    "c1": "Raf' case",
+    "c2": "Damma ( ُ /  ٌ )",
+    "c3": "I'rab by vowel marks",
+    "c4": "مُسْلِمٌ"
+   },
+   {
+    "c1": "Nasb case",
+    "c2": "Fatha ( َ /  ً )",
+    "c3": "I'rab by vowel marks",
+    "c4": "مُسْلِمًـا"
+   },
+   {
+    "c1": "Jarr case",
+    "c2": "Kasra ( ِ /  ٍ )",
+    "c3": "I'rab by vowel marks",
+    "c4": "مُسْلِمٍ"
+   },
+   {
+    "c1": "Raf' case (dual)",
+    "c2": "ـَانِ (-āni)",
+    "c3": "I'rab by letters",
+    "c4": "مُسْلِمَانِ"
+   },
+   {
+    "c1": "Nasb & Jarr case (dual)",
+    "c2": "ـَيْنِ (-ayni)",
+    "c3": "I'rab by letters",
+    "c4": "مُسْلِمَيْنِ"
+   },
+   {
+    "c1": "Raf' case (sound masculine plural)",
+    "c2": "ـُونَ (-ūna)",
+    "c3": "I'rab by letters",
+    "c4": "مُسْلِمُونَ"
+   },
+   {
+    "c1": "Nasb & Jarr case (sound masculine plural)",
+    "c2": "ـِينَ (-īna)",
+    "c3": "I'rab by letters",
+    "c4": "مُسْلِمِينَ"
+   }
+  ],
+  "rule": "An Arabic noun has three grammatical cases: Raf' (nominative – the doer / subject), Nasb (accusative – the one the action falls on), and Jarr (genitive – after a preposition or as the second term of an idafa). I'rab is shown either by vowel marks (damma, fatha, kasra) or by letters (-āni, -ayni, -ūna, -īna).",
+  "note": "I'rab by vowel marks applies to the singular noun, while in the dual and sound plural, letters do the work of I'rab.",
+  "examples": [
+   {
+    "arabic": "جَاءَ زَيْدٌ",
+    "urdu": "Zayd came (Raf' case – subject)",
+    "quran": "قَالَ رَجُلٌ مُؤْمِنٌ"
+   },
+   {
+    "arabic": "رَأَيْتُ زَيْدًا",
+    "urdu": "I saw Zayd (Nasb case – object)",
+    "quran": "وَقَتَلَ دَاوُودُ جَالُوتَ"
+   },
+   {
+    "arabic": "مَرَرْتُ بِزَيْدٍ",
+    "urdu": "I passed by Zayd (Jarr case)",
+    "quran": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ"
+   },
+   {
+    "arabic": "الْمُسْلِمُونَ صَادِقُونَ",
+    "urdu": "The Muslims are truthful (sound plural, Raf' by letters)",
+    "quran": "قَدْ أَفْلَحَ الْمُؤْمِنُونَ"
+   }
+  ]
+ },
+ "wusat": {
+  "title": "Definiteness – Ma'rifa & Nakira (Definite & Indefinite)",
+  "badge": "Noun definiteness",
+  "subCategories": {
+   "all": "All types of definiteness",
+   "marifa": "The 7 types of definite noun (Ma'rifa)",
+   "nakirah": "Indefinite noun (Nakira – common noun)"
+  },
+  "columns": [
+   "Type",
+   "Definition / Sign",
+   "Details",
+   "Example"
+  ],
+  "rows": [
+   {
+    "c1": "1. Pronoun (Damir)",
+    "c2": "Definite by itself",
+    "c3": "Detached and attached pronouns (هو، هم، ك...)",
+    "c4": "هُوَ ، هُمْ"
+   },
+   {
+    "c1": "2. Proper noun (Alam)",
+    "c2": "Specific name",
+    "c3": "Name of a person, place or thing",
+    "c4": "مُحَمَّدٌ ، مَكَّةُ"
+   },
+   {
+    "c1": "3. Demonstrative noun",
+    "c2": "Pointing words",
+    "c3": "Near and far demonstratives",
+    "c4": "هَذَا ، ذَلِكَ"
+   },
+   {
+    "c1": "4. Relative noun",
+    "c2": "Noun with a sila clause",
+    "c3": "A noun that links a clause",
+    "c4": "الَّذِي ، الَّذِينَ"
+   },
+   {
+    "c1": "5. Definite with Al (ال)",
+    "c2": "Al- (alif lam)",
+    "c3": "A noun that takes alif lam",
+    "c4": "الْكِتَابُ ، الرَّسُولُ"
+   },
+   {
+    "c1": "6. Annexed to a definite noun",
+    "c2": "Possessive construction",
+    "c3": "An indefinite noun annexed to a definite one",
+    "c4": "كِتَابُ اللَّهِ"
+   },
+   {
+    "c1": "7. Vocative (Munada)",
+    "c2": "The called noun",
+    "c3": "A noun called with a vocative particle",
+    "c4": "يَا رَجُلُ"
+   },
+   {
+    "c1": "Indefinite noun (Nakira – common noun)",
+    "c2": "Tanwin ( ً  ٍ  ٌ )",
+    "c3": "General, unspecified noun",
+    "c4": "كِتَابٌ ، رَجُلٌ"
+   }
+  ],
+  "rule": "In terms of definiteness, Arabic nouns are of two kinds: Ma'rifa (definite) and Nakira (indefinite). An indefinite noun is recognised by tanwin, while the 7 main kinds of definite noun are shown in the table.",
+  "note": "When alif lam (الـ) is added to a noun, its tanwin falls away.",
+  "examples": [
+   {
+    "arabic": "الْحَمْدُ لِلَّهِ",
+    "urdu": "All praise is for Allah (definite with Al)",
+    "quran": "الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ"
+   },
+   {
+    "arabic": "ذَلِكَ الْكِتَابُ",
+    "urdu": "That great Book (demonstrative + definite)",
+    "quran": "ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ"
+   },
+   {
+    "arabic": "كِتَابٌ أَنْزَلْنَاهُ",
+    "urdu": "A Book which We have revealed (indefinite)",
+    "quran": "كِتَابٌ أَنْزَلْنَاهُ إِلَيْكَ مُبَارَكٌ"
+   }
+  ]
+ },
+ "adad": {
+  "title": "Number – Singular, Dual, Plural",
+  "badge": "Noun number",
+  "subCategories": {
+   "all": "All numbers",
+   "wahid": "Singular (Wahid)",
+   "tasniya": "Dual (Tasniya)",
+   "jama": "Sound & broken plural (Jam')"
+  },
+  "columns": [
+   "Number",
+   "Sign / Method",
+   "Branch / Type",
+   "Example"
+  ],
+  "rows": [
+   {
+    "c1": "Singular",
+    "c2": "Base noun",
+    "c3": "For one",
+    "c4": "مُسْلِمٌ / مُسْلِمَةٌ"
+   },
+   {
+    "c1": "Dual (masculine)",
+    "c2": "ـَانِ / ـَيْنِ",
+    "c3": "For two",
+    "c4": "مُسْلِمَانِ / مُسْلِمَيْنِ"
+   },
+   {
+    "c1": "Dual (feminine)",
+    "c2": "ـَتَانِ / ـَتَيْنِ",
+    "c3": "For two feminines",
+    "c4": "مُسْلِمَتَانِ / مُسْلِمَتَيْنِ"
+   },
+   {
+    "c1": "Sound masculine plural",
+    "c2": "ـُونَ / ـِينَ",
+    "c3": "The root stays intact",
+    "c4": "مُسْلِمُونَ / مُسْلِمِينَ"
+   },
+   {
+    "c1": "Sound feminine plural",
+    "c2": "ـَاتٌ / ـَاتٍ",
+    "c3": "Alif and ta are added",
+    "c4": "مُسْلِمَاتٌ / مُسْلِمَاتٍ"
+   },
+   {
+    "c1": "Broken plural",
+    "c2": "The pattern changes",
+    "c3": "The singular's pattern is broken",
+    "c4": "رِجَالٌ ، كُتُبٌ ، مَسَاجِدُ"
+   }
+  ],
+  "rule": "Unlike English, Arabic has a separate form between singular and plural: the 'dual' (for two). There are two kinds of plural: sound plural (the singular word stays intact) and broken plural (the structure of the singular word breaks).",
+  "note": "The noon of the dual is always maksura (with kasra), while the noon of the sound masculine plural is maftuha (with fatha).",
+  "examples": [
+   {
+    "arabic": "رَجُلاَنِ",
+    "urdu": "Two men (dual)",
+    "quran": "قَالَ رَجُلَانِ مِنَ الَّذِينَ يَخَافُونَ"
+   },
+   {
+    "arabic": "الْمُؤْمِنُونَ",
+    "urdu": "All the believing men (sound plural)",
+    "quran": "إِنَّمَا الْمُؤْمِنُونَ إِخْوَةٌ"
+   },
+   {
+    "arabic": "الْمَسَاجِدُ",
+    "urdu": "All the mosques (broken plural)",
+    "quran": "وَأَنَّ الْمَسَاجِدَ لِلَّهِ"
+   }
+  ]
+ },
+ "jins": {
+  "title": "Gender – Masculine & Feminine",
+  "badge": "Masculine & feminine",
+  "subCategories": {
+   "all": "All types of gender",
+   "mudhakkar": "Masculine (Mudhakkar)",
+   "haqiqi": "Real feminine",
+   "qiyasi": "Regular feminine (by sign)",
+   "samai": "Heard feminine (all 17 words)"
+  },
+  "columns": [
+   "Gender / Type",
+   "Sign / Definition",
+   "Details",
+   "Example / Words"
+  ],
+  "rows": [
+   {
+    "c1": "Masculine",
+    "c2": "Base gender",
+    "c3": "Has no feminine sign",
+    "c4": "رَجُلٌ ، قَلَمٌ ، بَابٌ"
+   },
+   {
+    "c1": "Real feminine",
+    "c2": "Living pair",
+    "c3": "Has a living male counterpart",
+    "c4": "أُمٌّ ، امْرَأَةٌ ، نَاقَةٌ"
+   },
+   {
+    "c1": "Regular feminine",
+    "c2": "Round ta (ة)",
+    "c3": "Ends with ta marbuta",
+    "c4": "جَنَّةٌ ، ظُلْمَةٌ ، سَاعَةٌ"
+   },
+   {
+    "c1": "Regular feminine",
+    "c2": "Alif maqsura (ىٰ)",
+    "c3": "Ends with a standing fatha and ya",
+    "c4": "بُشْرَىٰ ، صُغْرَىٰ ، كُبْرَىٰ"
+   },
+   {
+    "c1": "Regular feminine",
+    "c2": "Alif mamduda (اء)",
+    "c3": "Ends with alif and hamza",
+    "c4": "صَحْرَاءُ ، حَمْرَاءُ"
+   },
+   {
+    "c1": "Heard feminine (Sama'i)",
+    "c2": "Heard from native speakers",
+    "c3": "The 17 special words (fire, war, sun...)",
+    "c4": "نَار ، حَرْب ، شَمْس ، نَفْس ، عَصَا"
+   },
+   {
+    "c1": "Heard feminine (remaining)",
+    "c2": "Heard from native speakers",
+    "c3": "سَبِيل ، دَار ، رِيح ، أَرْض ، جَهَنَّم",
+    "c4": "دَلْو ، خَمْر ، كَأْس ، قَدَم ، بِئْر ، رِجْل"
+   }
+  ],
+  "rule": "In Arabic the base gender is masculine. Feminine has three main kinds: real (living beings), regular (marked by ة, ىٰ or اء), and heard feminine (inanimate words that native Arabic speakers treat as feminine).",
+  "note": "Important heard-feminine words: nar (fire), harb (war), shams (sun), nafs (soul), asa (staff), sabil (path), dar (house), rih (wind), ard (earth), jahannam (hell), dalw (bucket), khamr (wine), ka's (cup), qadam (foot), bi'r (well), rijl (leg).",
+  "examples": [
+   {
+    "arabic": "الشَّمْسُ طَالِعَةٌ",
+    "urdu": "The sun is rising (heard feminine)",
+    "quran": "وَالشَّمْسِ وَضُحَاهَا"
+   },
+   {
+    "arabic": "نَارٌ حَامِيَةٌ",
+    "urdu": "A blazing fire (heard + regular feminine)",
+    "quran": "نَارٌ حَامِيَةٌ"
+   },
+   {
+    "arabic": "جَنَّةٌ عَالِيَةٌ",
+    "urdu": "A lofty garden (regular feminine ة)",
+    "quran": "فِي جَنَّةٍ عَالِيَةٍ"
+   }
+  ]
+ },
+ "madi": {
+  "title": "Past Tense Signs – Active (14 Forms)",
+  "badge": "Past tense verb",
+  "subCategories": {
+   "all": "All 14 forms",
+   "ghaib": "Third person (Ghaib)",
+   "hazir": "Second person (Hazir)",
+   "mutakallim": "First person (Mutakallim)"
+  },
+  "columns": [
+   "Form",
+   "Gender",
+   "Singular",
+   "Dual",
+   "Plural"
+  ],
+  "rows": [
+   {
+    "c1": "3rd Person (Ghaib)",
+    "c2": "Masculine",
+    "c3": "فَعَلَ <br><span class='text-xs text-brand-600'>(root: 3 letters)</span>",
+    "c4": "فَعَلَا <br><span class='text-xs text-brand-600'>(sign: ...ا)</span>",
+    "c5": "فَعَلُوا <br><span class='text-xs text-brand-600'>(sign: ...وا)</span>"
+   },
+   {
+    "c1": "3rd Person (Ghaib)",
+    "c2": "Feminine",
+    "c3": "فَعَلَتْ <br><span class='text-xs text-brand-600'>(sign: ...تْ)</span>",
+    "c4": "فَعَلَتَا <br><span class='text-xs text-brand-600'>(sign: ...تا)</span>",
+    "c5": "فَعَلْنَ <br><span class='text-xs text-brand-600'>(sign: ...نَ)</span>"
+   },
+   {
+    "c1": "2nd Person (Hazir)",
+    "c2": "Masculine",
+    "c3": "فَعَلْتَ <br><span class='text-xs text-brand-600'>(sign: ...تَ)</span>",
+    "c4": "فَعَلْتُمَا <br><span class='text-xs text-brand-600'>(sign: ...تما)</span>",
+    "c5": "فَعَلْتُمْ <br><span class='text-xs text-brand-600'>(sign: ...تم)</span>"
+   },
+   {
+    "c1": "2nd Person (Hazir)",
+    "c2": "Feminine",
+    "c3": "فَعَلْتِ <br><span class='text-xs text-brand-600'>(sign: ...تِ)</span>",
+    "c4": "فَعَلْتُمَا <br><span class='text-xs text-brand-600'>(sign: ...تما)</span>",
+    "c5": "فَعَلْتُنَّ <br><span class='text-xs text-brand-600'>(sign: ...تنّ)</span>"
+   },
+   {
+    "c1": "1st Person (Mutakallim)",
+    "c2": "Common",
+    "c3": "فَعَلْتُ <br><span class='text-xs text-brand-600'>(sign: ...تُ)</span>",
+    "c4": "—",
+    "c5": "فَعَلْنَا <br><span class='text-xs text-brand-600'>(sign: ...نا)</span>"
+   }
+  ],
+  "rule": "The signs of the past tense verb are attached at the end of the word. All 14 past-tense conjugations are listed in detail in the table above.",
+  "note": "In the first person singular the ending 'tu' (تُ) is added, and in the first person plural the ending 'na' (نَا) is added.",
+  "examples": [
+   {
+    "arabic": "خَلَقَ اللَّهُ",
+    "urdu": "Allah created (3rd person masculine singular)",
+    "quran": "خَلَقَ السَّمَاوَاتِ وَالْأَرْضَ"
+   },
+   {
+    "arabic": "آَمَنُوا وَعَمِلُوا",
+    "urdu": "They believed and did deeds (3rd person plural)",
+    "quran": "الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ"
+   },
+   {
+    "arabic": "كَتَبْنَا",
+    "urdu": "We have written (1st person plural)",
+    "quran": "وَكَتَبْنَا عَلَيْهِمْ فِيهَا"
+   }
+  ]
+ },
+ "mudari": {
+  "title": "Present Tense Signs – Active (14 Forms)",
+  "badge": "Present tense verb",
+  "subCategories": {
+   "all": "All 14 forms",
+   "ghaib": "Third person (Ghaib)",
+   "hazir": "Second person (Hazir)",
+   "mutakallim": "First person (Mutakallim)"
+  },
+  "columns": [
+   "Form",
+   "Gender",
+   "Singular",
+   "Dual",
+   "Plural"
+  ],
+  "rows": [
+   {
+    "c1": "3rd Person (Ghaib)",
+    "c2": "Masculine",
+    "c3": "يَفْعُلُ <br><span class='text-xs text-brand-600'>(sign: يـ)</span>",
+    "c4": "يَفْعَلَانِ <br><span class='text-xs text-brand-600'>(يـ + ...انِ)</span>",
+    "c5": "يَفْعَلُونَ <br><span class='text-xs text-brand-600'>(يـ + ...ون)</span>"
+   },
+   {
+    "c1": "3rd Person (Ghaib)",
+    "c2": "Feminine",
+    "c3": "تَفْعُلُ <br><span class='text-xs text-brand-600'>(sign: تـ)</span>",
+    "c4": "تَفْعَلَانِ <br><span class='text-xs text-brand-600'>(تـ + ...انِ)</span>",
+    "c5": "يَفْعَلْنَ <br><span class='text-xs text-brand-600'>(يـ + ...نَ)</span>"
+   },
+   {
+    "c1": "2nd Person (Hazir)",
+    "c2": "Masculine",
+    "c3": "تَفْعُلُ <br><span class='text-xs text-brand-600'>(sign: تـ)</span>",
+    "c4": "تَفْعَلَانِ <br><span class='text-xs text-brand-600'>(تـ + ...انِ)</span>",
+    "c5": "تَفْعَلُونَ <br><span class='text-xs text-brand-600'>(تـ + ...ون)</span>"
+   },
+   {
+    "c1": "2nd Person (Hazir)",
+    "c2": "Feminine",
+    "c3": "تَفْعَلِينَ <br><span class='text-xs text-brand-600'>(تـ + ...ين)</span>",
+    "c4": "تَفْعَلَانِ <br><span class='text-xs text-brand-600'>(تـ + ...انِ)</span>",
+    "c5": "تَفْعَلْنَ <br><span class='text-xs text-brand-600'>(تـ + ...نَ)</span>"
+   },
+   {
+    "c1": "1st Person (Mutakallim)",
+    "c2": "Common",
+    "c3": "أَفْعُلُ <br><span class='text-xs text-brand-600'>(sign: أ)</span>",
+    "c4": "—",
+    "c5": "نَفْعُلُ <br><span class='text-xs text-brand-600'>(sign: نـ)</span>"
+   }
+  ],
+  "rule": "The present tense verb takes one of 4 prefix letters (أ، ت، ي، ن) at the beginning of the word, collectively called 'Atayt' (اَتَيْتُ). In addition, a noon of I'rab is added in some forms.",
+  "note": "In all masculine third-person forms the prefix is 'ي', while in the 2nd person and the 3rd person feminine singular it is 'ت'.",
+  "examples": [
+   {
+    "arabic": "يَعْلَمُونَ",
+    "urdu": "They all know",
+    "quran": "وَاللَّهُ يَعْلَمُ وَأَنْتُمْ لَا تَعْلَمُونَ"
+   },
+   {
+    "arabic": "أَعْبُدُ",
+    "urdu": "I worship",
+    "quran": "لَا أَعْبُدُ مَا تَعْبُدُونَ"
+   },
+   {
+    "arabic": "نَسْتَعِينُ",
+    "urdu": "We seek help",
+    "quran": "وَإِيَّاكَ نَسْتَعِينُ"
+   }
+  ]
+ },
+ "damair": {
+  "title": "Pronouns – Attached & Detached",
+  "badge": "Pronoun chart",
+  "subCategories": {
+   "all": "All pronouns (28 forms)",
+   "mutasil": "Attached pronoun (joined)",
+   "munfasil": "Detached pronoun (separate)"
+  },
+  "columns": [
+   "Form",
+   "Gender",
+   "Singular",
+   "Dual",
+   "Plural"
+  ],
+  "rows": [
+   {
+    "c1": "Detached (3rd masculine)",
+    "c2": "Masculine",
+    "c3": "هُوَ",
+    "c4": "هُمَا",
+    "c5": "هُمْ"
+   },
+   {
+    "c1": "Detached (3rd feminine)",
+    "c2": "Feminine",
+    "c3": "هِيَ",
+    "c4": "هُمَا",
+    "c5": "هُنَّ"
+   },
+   {
+    "c1": "Detached (2nd masculine)",
+    "c2": "Masculine",
+    "c3": "أَنْتَ",
+    "c4": "أَنْتُمَا",
+    "c5": "أَنْتُمْ"
+   },
+   {
+    "c1": "Detached (2nd feminine)",
+    "c2": "Feminine",
+    "c3": "أَنْتِ",
+    "c4": "أَنْتُمَا",
+    "c5": "أَنْتُنَّ"
+   },
+   {
+    "c1": "Detached (1st person)",
+    "c2": "Common",
+    "c3": "أَنَا",
+    "c4": "—",
+    "c5": "نَحْنُ"
+   },
+   {
+    "c1": "Attached (3rd masculine)",
+    "c2": "Masculine",
+    "c3": "ـهُ (his)",
+    "c4": "ـهُمَا",
+    "c5": "ـهُمْ"
+   },
+   {
+    "c1": "Attached (3rd feminine)",
+    "c2": "Feminine",
+    "c3": "ـهَا",
+    "c4": "ـهُمَا",
+    "c5": "ـهُنَّ"
+   },
+   {
+    "c1": "Attached (2nd masculine)",
+    "c2": "Masculine",
+    "c3": "ـكَ (your)",
+    "c4": "ـكُمَا",
+    "c5": "ـكُمْ"
+   },
+   {
+    "c1": "Attached (2nd feminine)",
+    "c2": "Feminine",
+    "c3": "ـكِ",
+    "c4": "ـكُمَا",
+    "c5": "ـكُنَّ"
+   },
+   {
+    "c1": "Attached (1st person)",
+    "c2": "Common",
+    "c3": "ـِي / نِي (my)",
+    "c4": "—",
+    "c5": "ـنَا (our)"
+   }
+  ],
+  "rule": "Pronouns are of two main kinds: detached (separate pronouns written on their own) and attached (pronouns that join a noun, verb or particle).",
+  "note": "The table includes all 14 forms of both attached and detached pronouns.",
+  "examples": [
+   {
+    "arabic": "هُوَ اللَّهُ",
+    "urdu": "He is Allah (detached pronoun)",
+    "quran": "قُلْ هُوَ اللَّهُ أَحَدٌ"
+   },
+   {
+    "arabic": "رَبَّنَا",
+    "urdu": "Our Lord (attached pronoun)",
+    "quran": "رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً"
+   }
+  ]
+ },
+ "ishara": {
+  "title": "Demonstrative Nouns",
+  "badge": "Demonstrative noun",
+  "subCategories": {
+   "all": "All demonstratives",
+   "qareeb": "Near demonstrative",
+   "baeod": "Far demonstrative",
+   "makan": "Place demonstrative"
+  },
+  "columns": [
+   "Type",
+   "Gender",
+   "Singular",
+   "Dual",
+   "Plural"
+  ],
+  "rows": [
+   {
+    "c1": "Near",
+    "c2": "Masculine",
+    "c3": "هَذَا",
+    "c4": "هَذَانِ / هَذَيْنِ",
+    "c5": "هَؤُلَاءِ"
+   },
+   {
+    "c1": "Near",
+    "c2": "Feminine",
+    "c3": "هَذِهِ",
+    "c4": "هَاتَانِ / هَاتَيْنِ",
+    "c5": "هَؤُلَاءِ"
+   },
+   {
+    "c1": "Far",
+    "c2": "Masculine",
+    "c3": "ذَلِكَ / ذَاكَ",
+    "c4": "ذَانِكَ / ذَيْنِكَ",
+    "c5": "أُولَئِكَ"
+   },
+   {
+    "c1": "Far",
+    "c2": "Feminine",
+    "c3": "تِلْكَ",
+    "c4": "تَانِكَ / تَيْنِكَ",
+    "c5": "أُولَئِكَ"
+   },
+   {
+    "c1": "Place",
+    "c2": "Place",
+    "c3": "هُنَا (here)",
+    "c4": "هُنَاكَ (there)",
+    "c5": "هُنَالِكَ (far there)"
+   }
+  ],
+  "rule": "A demonstrative noun is used to point to a noun or a place. For near objects هذا / هذه is used, and for far ones ذلك / تلك.",
+  "note": "هؤلاء and أولئك are shared by masculine and feminine as plurals.",
+  "examples": [
+   {
+    "arabic": "هَذَا كِتَابٌ",
+    "urdu": "This is a book",
+    "quran": "هَذَا بَلَاغٌ لِلنَّاسِ"
+   },
+   {
+    "arabic": "ذَلِكَ الْكِتَابُ",
+    "urdu": "That great Book",
+    "quran": "ذَلِكَ الْكِتَابُ لَا رَيْبَ فِيهِ"
+   }
+  ]
+ },
+ "mausool": {
+  "title": "Relative Nouns",
+  "badge": "Relative noun",
+  "subCategories": {
+   "all": "All relative nouns",
+   "khas": "Specific relative (الذي...)",
+   "aam": "General relative (من، ما)"
+  },
+  "columns": [
+   "Type",
+   "Gender",
+   "Singular",
+   "Dual",
+   "Plural"
+  ],
+  "rows": [
+   {
+    "c1": "Specific relative",
+    "c2": "Masculine",
+    "c3": "الَّذِي",
+    "c4": "الَّذَانِ / الَّذَيْنِ",
+    "c5": "الَّذِينَ"
+   },
+   {
+    "c1": "Specific relative",
+    "c2": "Feminine",
+    "c3": "الَّتِي",
+    "c4": "الَّتَانِ / اللَّتَيْنِ",
+    "c5": "اللَّاتِي / اللَّائِي"
+   },
+   {
+    "c1": "General relative",
+    "c2": "Rational beings",
+    "c3": "مَنْ (whoever)",
+    "c4": "مَنْ",
+    "c5": "مَنْ"
+   },
+   {
+    "c1": "General relative",
+    "c2": "Non-rational things",
+    "c3": "مَا (whatever)",
+    "c4": "مَا",
+    "c5": "مَا"
+   }
+  ],
+  "rule": "A relative noun does not complete its meaning without the clause that follows it (the sila). مَنْ is used for people and rational beings, while مَا is used for inanimate things.",
+  "note": "الذي، الذين and من / ما are the most frequently used in the Quran.",
+  "examples": [
+   {
+    "arabic": "الَّذِي خَلَقَنِي",
+    "urdu": "The One who created me",
+    "quran": "الَّذِي خَلَقَنِي فَهُوَ يَهْدِينِ"
+   },
+   {
+    "arabic": "مَنْ آَمَنَ",
+    "urdu": "Whoever believed",
+    "quran": "مَنْ آمَنَ بِاللَّهِ وَالْيَوْمِ الْآخِرِ"
+   }
+  ]
+ },
+ "jar": {
+  "title": "Prepositions (all 17) & Grammatical Constructions",
+  "badge": "Particles & constructions",
+  "subCategories": {
+   "all": "All particles & constructions",
+   "huroof17": "All 17 prepositions (ba, ta, kaf...)",
+   "murakkab": "All kinds of constructions"
+  },
+  "columns": [
+   "Particle / Title",
+   "Meaning / First part",
+   "Usage / Second part",
+   "Example / Construction"
+  ],
+  "rows": [
+   {
+    "c1": "1. Al-Ba (بِـ)",
+    "c2": "with / by means of",
+    "c3": "oath, seeking help, attachment",
+    "c4": "بِسْمِ اللَّهِ ، آمَنَّا بِاللَّهِ"
+   },
+   {
+    "c1": "2. Al-Ta (تَـ)",
+    "c2": "oath",
+    "c3": "used only in 'تَاللَّهِ'",
+    "c4": "تَاللَّهِ لَأَكِيدَنَّ أَصْنَامَكُمْ"
+   },
+   {
+    "c1": "3. Al-Kaf (كَـ)",
+    "c2": "like / as",
+    "c3": "for comparison",
+    "c4": "كَمَثَلِ غَيْثٍ ، كَالْعَهْنِ"
+   },
+   {
+    "c1": "4. Al-Lam (لِـ / لَـ)",
+    "c2": "for / ownership",
+    "c3": "specification and possession",
+    "c4": "الْحَمْدُ لِلَّهِ ، لَكُمْ دِينُكُمْ"
+   },
+   {
+    "c1": "5. Al-Waw (وَ)",
+    "c2": "oath",
+    "c3": "for swearing",
+    "c4": "وَالْعَصْرِ ، وَالشَّمْسِ"
+   },
+   {
+    "c1": "6. مُنْذُ",
+    "c2": "since (past time)",
+    "c3": "beginning of a limit (time)",
+    "c4": "مُنْذُ يَوْمِ الْجُمُعَةِ"
+   },
+   {
+    "c1": "7. مُذْ",
+    "c2": "since (short time)",
+    "c3": "for the start of a time",
+    "c4": "مُذْ يَوْمَيْنِ"
+   },
+   {
+    "c1": "8. خَلَا",
+    "c2": "except / apart from",
+    "c3": "for exception",
+    "c4": "خَلَا زَيْدٍ"
+   },
+   {
+    "c1": "9. رُبَّ",
+    "c2": "very few / many",
+    "c3": "for fewness or abundance",
+    "c4": "رُبَّ رَجُلٍ صَالِحٍ"
+   },
+   {
+    "c1": "10. حَاشَا",
+    "c2": "far be it / exalted",
+    "c3": "declaring free of fault, and exception",
+    "c4": "حَاشَ لِلَّهِ"
+   },
+   {
+    "c1": "11. مِنْ",
+    "c2": "from / some of",
+    "c3": "beginning of a limit / partitive",
+    "c4": "مِنَ الْمَسْجِدِ الْحَرَامِ"
+   },
+   {
+    "c1": "12. عَدَا",
+    "c2": "except",
+    "c3": "exception",
+    "c4": "عَدَا زَيْدٍ"
+   },
+   {
+    "c1": "13. فِي",
+    "c2": "in / inside",
+    "c3": "containment (place and time)",
+    "c4": "فِي صُدُورِ النَّاسِ"
+   },
+   {
+    "c1": "14. عَنْ",
+    "c2": "from / about",
+    "c3": "departure and concerning",
+    "c4": "رَضِيَ اللَّهُ عَنْهُمْ"
+   },
+   {
+    "c1": "15. عَلَى",
+    "c2": "on / upon",
+    "c3": "elevation (height)",
+    "c4": "عَلَى الْعَرْشِ اسْتَوَى"
+   },
+   {
+    "c1": "16. حَتَّى",
+    "c2": "until",
+    "c3": "end limit",
+    "c4": "حَتَّى مَطْلَعِ الْفَجْرِ"
+   },
+   {
+    "c1": "17. إِلَى",
+    "c2": "to / towards",
+    "c3": "end limit (destination)",
+    "c4": "إِلَى اللَّهِ الْمَصِيرُ"
+   },
+   {
+    "c1": "Prepositional phrase (Jari)",
+    "c2": "Jarr (preposition)",
+    "c3": "Majrur (noun in jarr)",
+    "c4": "فِي الْبَيْتِ ، عَلَى الْعَرْشِ"
+   },
+   {
+    "c1": "Demonstrative phrase",
+    "c2": "Demonstrative noun",
+    "c3": "Mushar ilayh (definite noun)",
+    "c4": "هَذَا الْكِتَابُ"
+   },
+   {
+    "c1": "Descriptive phrase (Tawsifi)",
+    "c2": "Mawsuf (described noun)",
+    "c3": "Sifa (description)",
+    "c4": "مَاءٌ طَهُورٌ ، عَبْدٌ صَالِحٌ"
+   },
+   {
+    "c1": "Possessive phrase (Idafi)",
+    "c2": "Mudaf (first term)",
+    "c3": "Mudaf ilayh (noun in jarr)",
+    "c4": "كِتَابُ اللَّهِ ، رَسُولُ اللَّهِ"
+   },
+   {
+    "c1": "Verbal sentence",
+    "c2": "Verb + subject",
+    "c3": "Object / complement",
+    "c4": "خَلَقَ اللَّهُ الْأَرْضَ"
+   },
+   {
+    "c1": "Nominal sentence",
+    "c2": "Mubtada (definite)",
+    "c3": "Khabar (indefinite)",
+    "c4": "اللَّهُ غَفُورٌ ، الصَّبْرُ جَمِيلٌ"
+   }
+  ],
+  "rule": "All 17 well-known prepositions of Arabic (ba, ta, kaf, lam, waw, mundhu, mudh, khala, rubba, hasha, min, ada, fi, an, ala, hatta, ila) put the noun that follows them in the genitive (jarr) case. All kinds of phrases and complete sentences are listed in the table.",
+  "note": "A famous Arabic verse: 'بَاءٌ تَاٌء كَافٌ لَامٌ وَاوٌ مُنْذُ مُذْ خَلَا... رُبَّ حَاشَا مِنْ عَدَا فِي عَنْ عَلَى حَتَّى إِلَى'",
+  "examples": [
+   {
+    "arabic": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ",
+    "urdu": "In the name of Allah (Al-Ba)",
+    "quran": "بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ"
+   },
+   {
+    "arabic": "تَاللَّهِ لَأَكِيدَنَّ أَصْنَامَكُمْ",
+    "urdu": "By Allah (Al-Ta)",
+    "quran": "تَاللَّهِ لَأَكِيدَنَّ أَصْنَامَكُمْ"
+   },
+   {
+    "arabic": "حَتَّى مَطْلَعِ الْفَجْرِ",
+    "urdu": "Until the rising of dawn (hatta)",
+    "quran": "سَلَامٌ هِيَ حَتَّى مَطْلَعِ الْفَجْرِ"
+   },
+   {
+    "arabic": "كِتَابٌ مُبِينٌ",
+    "urdu": "A clear Book (descriptive phrase)",
+    "quran": "تِلْكَ آيَاتُ الْكِتَابِ الْمُبِينِ"
+   }
+  ]
+ }
+}
