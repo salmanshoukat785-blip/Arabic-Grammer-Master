@@ -1,5 +1,8 @@
 name: Build APK
 
+# چلتا ہے جب:
+#  1) main/master میں کوئی بھی فائل یا zip اپلوڈ ہو
+#  2) Actions ٹیب سے "Run workflow" دبایا جائے
 on:
   push:
     branches: [ main, master ]
@@ -10,6 +13,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      # اگر ریپو میں پروجیکٹ کی .zip فائل اپلوڈ کی گئی ہو تو اسے خودکار طور پر کھول کر
+      # موجودہ فائلوں کے اوپر رکھ دیتا ہے (آپ کے آئیکن وغیرہ جیسی دوسری فائلیں محفوظ رہتی ہیں)۔
+      - name: Extract uploaded project zip (if any)
+        run: |
+          shopt -s nullglob
+          zips=( *.zip )
+          if [ ${#zips[@]} -eq 0 ]; then
+            echo "No zip in repo root - building the repo files as they are."
+            exit 0
+          fi
+          # سب سے تازہ اپلوڈ کی گئی zip چنیں، ورنہ جو بھی پہلی ہو
+          chosen=""
+          for z in $(git diff-tree --no-commit-id --name-only -r HEAD | grep -E '^[^/]+\.zip$'); do
+            [ -f "$z" ] && chosen="$z"
+          done
+          [ -z "$chosen" ] && chosen="${zips[0]}"
+          echo "Using zip: $chosen"
+          rm -rf /tmp/proj && mkdir /tmp/proj
+          unzip -o -q "$chosen" -d /tmp/proj
+          rm -rf /tmp/proj/__MACOSX
+          settings=$(find /tmp/proj -maxdepth 3 -name settings.gradle.kts | head -n1)
+          if [ -z "$settings" ]; then
+            echo "::error::zip کے اندر settings.gradle.kts نہیں ملی (یہ Android پروجیکٹ کی zip نہیں لگتی)"
+            exit 1
+          fi
+          src=$(dirname "$settings")
+          cp -a "$src"/. .
+          echo "Project files extracted from $src"
+          ls -la
+
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -27,5 +63,6 @@ jobs:
           exit $status
       - uses: actions/upload-artifact@v4
         with:
-          name: ArabicGrammarMaster-debug-apk
+          name: QuranArabic-debug-apk
           path: app/build/outputs/apk/debug/*.apk
+          
